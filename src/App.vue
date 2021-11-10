@@ -1,19 +1,42 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Todo List</h1>
+    <h2>All todos: {{ allTodosCount }}</h2>
+    <h2>completed Todo: {{ completedTodosCount }}</h2>
+    <h2>uncompleted Todo: {{ uncompletedTodosCount }}</h2>
+    <todo-list></todo-list>
+    <todo-form></todo-form>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { mapGetters } from "vuex";
+import TodoList from "@/components/TodoList";
+import TodoForm from "@/components/TodoForm";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    TodoList,
+    TodoForm,
+  },
+  computed: {
+    ...mapGetters([
+      "completedTodosCount",
+      "uncompletedTodosCount",
+      "allTodosCount",
+    ]),
+    // completedTodosCount() {
+    //   return this.$store.getters.completedTodosCount;
+    // },
+    // uncompletedTodosCount() {
+    //   return this.$store.getters.uncompletedTodosCount;
+    // },
+    // allTodosCount() {
+    //   return this.$store.getters.allTodosCount;
+    // },
+  },
+};
 </script>
 
 <style>
