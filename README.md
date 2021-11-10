@@ -42,9 +42,11 @@
   - 컴포넌트에서 dispatch() 메서드에 의해 호출된다 
   - **`state 는 역할 분리를 위해 Mutations 를 통해서 조작해야만 한다`**
 
+- Getters
+  - store의 상태를 기반하는 계산 값
+  - 실제 상태를 변경하지 않으며 computed 속성과 유사하다 
 
-
-### 전체 코드 
+### store/index.js 전체 코드 
 
 ```js
 import Vue from 'vue'
@@ -106,5 +108,72 @@ export default new Vuex.Store({
   }
 })
 
+```
+
+
+
+### Component Binding Helper 사용과 비교 
+
+ #### TodoList
+
+```js
+export default {
+  name: "TodoList",
+  components: {
+    TodoListItem,
+  },
+  // 아래 예시와 동일
+  // computed: {
+  //   todos() {
+  //     return this.$store.state.todos;
+  //   },
+  // },
+  computed: {
+    ...mapState(["todos"]),
+  },
+};
+```
+
+### TodoListItem
+
+```js
+import { mapActions } from "vuex";
+export default {
+  name: "TodoListItem",
+  props: {
+    todo: {
+      type: Object,
+    },
+  },
+  methods: {
+    ...mapActions(["deleteTodo", "updateTodoStatus"]),
+    // deleteTodo() {
+    //   this.$store.dispatch("deleteTodo", this.todo);
+    // },
+    // updateTodoStatus() {
+    //   this.$store.dispatch("updateTodoStatus", this.todo);
+    // },
+  },
+};
+```
+
+
+
+### vuex-persistedstate
+
+- 자동으로 브라우저 localStorage 에 저장해주는 라이브러리
+
+```js
+import Vue from 'vue'
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  state: {
+    todos: []
+  },
+  plugins: [createPersistedState()],
 ```
 
